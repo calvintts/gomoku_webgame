@@ -1,0 +1,72 @@
+body{
+  background-color: black;
+  color:white;
+}
+.option
+{
+
+  width:80%;
+  height:70px;
+  margin:20px;
+  color: white ;
+ background-color: inherit ;
+ border: 1px solid green;
+}
+
+#cell
+{
+  border: 1px solid green;
+  color: yellow;
+  width:30px;
+  height:35px;
+}
+ul{
+  list-style-type: none;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+td{
+  padding:5px;
+  text-align: center;
+  width:auto;
+  height:auto;
+}
+table{
+  margin:0 auto;
+  width:"80em"
+}
+
+li{
+  color:green;
+  display:inline;
+  float:left;
+  display:block;
+}
+
+
+#cell:hover{
+  background-color: dimgrey;
+}
+
+a, li button{
+  border: 1px solid green;
+  display:block;
+  padding:10px;
+  background-color:black;
+  color:white;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.option:hover,  li button:hover, a:hover{
+  background-color:dimgrey;
+}
+
+div footer{
+  align-content: center;
+  margin-top: auto;
+  margin-left:auto;
+  margin-right:auto;
+  width: 50em;
+}

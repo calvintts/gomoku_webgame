@@ -1,0 +1,278 @@
+var p1='X';
+var p2='O';
+var turn=p1;
+var col=[];
+var row=[];
+var streak;
+var xp=0;
+var op=0;
+var intervalID;
+var numberTurn=0;
+
+
+function putSign(object)
+  {
+    var xpieces=document.getElementById('xp');
+    var opieces=document.getElementById('op');
+    var numbert=document.getElementById('numbert');
+    var t = document.getElementById('turn');
+    if(object.innerHTML=='O'||object.innerHTML=='X')
+    {alert("Occupied!")
+    return;}
+    if(turn==p2)
+    {
+      object.innerHTML='O';
+      checkWin();
+      turn=p1;
+      op++;
+      numberTurn++;
+
+      t.innerHTML = "Player "+turn+"'s turn.";
+      xpieces.innerHTML=" Number of X marked:"+xp;
+      opieces.innerHTML=" Number of O marked:"+op;
+      numbert.innerHTML="Number of turns: "+numberTurn;
+    }
+    else
+    {
+      object.innerHTML='X';
+      checkWin();
+      xp++;
+      turn=p2;
+      numberTurn++;
+        t.innerHTML = "Player "+turn+"'s turn.'";
+      xpieces.innerHTML=" Number of X marked:"+xp;
+      opieces.innerHTML=" Number of O marked:"+op;
+      numbert.innerHTML="Number of turns: "+ numberTurn ;
+    }
+  };
+
+
+
+function drawBoard(x)
+  {
+    var div = document.getElementById('div');
+    var table = document.createElement('table');
+    col=new Array(x);
+    row=new Array(col);
+
+    for(let a=0;a<x;a++)
+    {
+      row[a] = new Array();
+    }
+    for(var i = 0 ;i < x ; i++)
+    {
+      row[i] = document.createElement('tr');
+      for(var j = 0; j<x; j++)
+      {
+        row[i][j] = document.createElement('td');
+        var content = document.createTextNode(" ");
+        row[i][j].setAttribute("onclick","putSign(this)");
+        row[i][j].setAttribute("id","cell");
+        row[i][j].appendChild(content);
+        row[i].appendChild(row[i][j]);
+      }
+      table.appendChild(row[i]);
+      table.style.borderCollapse = "collapse";
+      table.style.tableLayout= "fixed";
+      table.setAttribute("id","tbl");
+      table.style.padding="20px";
+    }
+
+    document.getElementById("div").innerHTML="";
+    var timer = document.createElement("div");
+    var turn = document.createElement("div");
+    var pieceso= document.createElement("div");
+    var piecesx= document.createElement('div');
+    var numbert=document.createElement('div');
+    timer.setAttribute('id','time');
+    turn.setAttribute('id','turn');
+    numbert.setAttribute('id','numbert');
+    piecesx.setAttribute('id','xp');
+    pieceso.setAttribute('id','op');
+    piecesx.innerHTML=" Number of 'X'marked :"+xp;
+    pieceso.innerHTML=" Number of 'O marked :"+op;
+    numbert.innerHTML=" Number of turns: "+numberTurn;
+    div.appendChild(timer);
+    div.appendChild(turn);
+    div.appendChild(piecesx);
+    div.appendChild(pieceso);
+    div.appendChild(numbert);
+    div.appendChild(table);
+  };
+
+function startClock()
+{
+  inervalID = setInterval(timeFunction,1000);
+};
+function stopClock()
+{
+  clearInterval(intervalID);
+};
+function timeFunction()
+{
+  var timer=document.getElementById("time");
+  var timenow=new Date();
+  let hours=timenow.getHours();
+  let minutes=timenow.getMinutes();
+  let seconds=timenow.getSeconds();
+  timer.innerHTML="Time:"+minutes+"minutes"+seconds+"seconds";
+};
+function changePcsColor(color)
+{
+  var pcs=document.getElementsByTagName('td');
+  let clr;
+  switch(color){
+    case 1:
+      clr='yellow';
+      break;
+    case 2:
+      clr='aqua';
+      break;
+    case 3:
+      clr='red';
+      break;
+    case 4:
+      clr='purple';
+      break;
+    default:
+      clr='green';
+      break;
+}
+pcs.style.color=clr;
+};
+
+function changeColor(color)
+  {
+    var tb=document.getElementById('tbl');
+    let clr;
+    switch(color){
+      case 1:
+        clr='white';
+        break;
+      case 2:
+        clr='brown';
+        break;
+      case 3:
+        clr='DarkBlue';
+        break;
+      default:
+        clr='black';
+        break;
+  }
+  tb.style.backgroundColor=clr;
+};
+function Winner()
+{
+  if(turn==p2)
+  {
+    alert("Player '0' win");
+    location.reload();
+  }
+  else
+  {
+    alert("Player 'X' win");
+    location.reload();
+  }
+};
+
+function checkWin()
+{
+  for(let i=0;i<row.length;i++)
+  {
+    for(let j=0;j<row.length;j++)
+    {
+      if(row[i][j].innerHTML != " ")
+      {
+        if(crossCheck()||horizontalCheck(i,j)||verticalCheck(i,j)||leftDiagonalCheck(i,j)||rightDiagonalCheck(i,j))
+        {
+          Winner();
+        }
+      }
+    }
+  }
+};
+
+function horizontalCheck(a,b)
+{
+  let x = row[a][b].innerHTML;
+  streak=0;
+  for(let i=b;i<row.length;i++)
+  {
+    if(x == row[a][i].innerHTML)
+    {
+      streak++;
+    }
+    else {
+      break;
+    }
+  }
+  return (streak>=5);
+};
+
+function verticalCheck(a,b)
+{
+  let x = row[a][b].innerHTML;
+  streak=0;
+  for(let i=a;i<row.length;i++)
+  {
+    if(x == row[i][b].innerHTML)
+    {
+      streak++;
+    }
+    else {
+      break;
+    }
+  }
+  return (streak>=5)
+};
+
+function crossCheck()
+{
+  for(let i=0;i<row.length;i++)
+  {
+    for(let j=0;j<row.length;j++)
+    {
+      if(row[i][j].innerHTML!=" ")
+      {
+        if(rightDiagonalCheck(i,j)||leftDiagonalCheck(i,j))
+        return true;
+      }
+    }
+  }
+}
+
+function rightDiagonalCheck(a,b)
+{
+  let x = row[a][b].innerHTML;
+  streak=0;
+  for(let i=b,j=a;i<row.length,j<row.length;j++,i++)
+  {
+    if(x == row[i][i].innerHTML)
+    {
+      streak++;
+    }
+    else {
+      break;
+    }
+  }
+  return (streak>=5);
+};
+
+function leftDiagonalCheck(a,b)
+{
+  let x = row[a][b].innerHTML;
+  streak=0;
+  if(a==0||b==0)
+  return false;
+  for(let i=b,j=a; i<row.length&&j<row.length;j++,i--)
+  {
+    if(x == row[j][i].innerHTML)
+    {
+      streak++;
+    }
+    else {
+      break;
+    }
+  }
+  return (streak>=5);
+};
